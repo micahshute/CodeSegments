@@ -13,6 +13,6 @@ public interface SupportsBinaryOperations<T> {
 
     Optional<T> performBinary(SupportedOperationsEnumeration<FailableBinaryOperator<T>> supportedOperation, T lhs, T rhs);
 
-    FailableBinaryOperator<T> getSupportedBinaryOperation(SupportedOperationsEnumeration<FailableBinaryOperator<T>> supportedOperation);
+//    FailableBinaryOperator<T> getSupportedBinaryOperation(SupportedOperationsEnumeration<FailableBinaryOperator<T>> supportedOperation);
 
 }
