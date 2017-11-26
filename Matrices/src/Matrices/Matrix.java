@@ -304,14 +304,17 @@ public class Matrix implements Equatable, Invertable, Displayable, SupportsBinar
 
     }
 
+    public Matrix(){
+        this(new double[1][0]);
+    }
+
+
 
     //MARK: Getters
 
     public int getNumberOfColumns() {
         return numberOfColumns;
     }
-
-
 
 
     public int getNumberOfRows(){
@@ -475,7 +478,7 @@ public class Matrix implements Equatable, Invertable, Displayable, SupportsBinar
         return operationToPerform.apply(lhs,rhs);
     }
 
-    @Override
+    //@Override
     public FailableBinaryOperator<Matrix> getSupportedBinaryOperation(SupportedOperationsEnumeration<FailableBinaryOperator<Matrix>> supportedOperation) {
         return supportedOperation.getOperationFunction();
     }
