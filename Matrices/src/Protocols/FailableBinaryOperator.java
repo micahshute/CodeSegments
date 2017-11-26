@@ -7,4 +7,5 @@ public interface FailableBinaryOperator<T> extends BinaryOperator{
     Optional<T> apply(T lhs, T rhs);
 
 
+
 }
