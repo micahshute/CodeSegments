@@ -6,7 +6,15 @@ import Protocols.*;
 
 
 
-class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixDouble>, UniversalMultiplier{
+public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixDouble>, UniversalMultiplier, SupportsUniversalMultiplication{
+
+    public static MatrixDouble getZeroValueInstance(){
+        return new MatrixDouble(0);
+    }
+
+    public static MatrixDouble getUnityValueInstance(){
+        return new MatrixDouble(1);
+    }
 
     private Double value;
 
@@ -70,6 +78,48 @@ class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixDouble>,
     }
 
 
+    public static MatrixDouble[][] convertToMatrixDoubleArray(double[][] data){
+        MatrixDouble[][] mdArray = new MatrixDouble[data.length][];
+        for(int i = 0; i < data.length; i++){
+            for(int j = 0; j < data[i].length; j++){
+                mdArray[i][j] = new MatrixDouble(data[i][j]);
+            }
+        }
+
+        return mdArray;
+    }
+
+    public static MatrixDouble[][] convertToMatrixDoubleArray(Double[][] data){
+        MatrixDouble[][] mdArray = new MatrixDouble[data.length][];
+        for(int i = 0; i < data.length; i++){
+            for(int j = 0; j < data[i].length; j++){
+                mdArray[i][j] = new MatrixDouble(data[i][j]);
+            }
+        }
+
+        return mdArray;
+    }
+
+    public static MatrixDouble[][] convertToMatrixDoubleArray(int[][] data){
+        MatrixDouble[][] mdArray = new MatrixDouble[data.length][];
+        for(int i = 0; i < data.length; i++){
+            for(int j = 0; j < data.length; j++){
+                mdArray[i][j] = new MatrixDouble(data[i][j]);
+            }
+        }
+        return mdArray;
+    }
+
+    public static MatrixDouble[][] convertToMatrixDoubleArray(Integer[][] data){
+        MatrixDouble[][] mdArray = new MatrixDouble[data.length][];
+        for(int i = 0; i < data.length; i++){
+            for(int j = 0; j < data.length; j++){
+                mdArray[i][j] = new MatrixDouble(data[i][j]);
+            }
+        }
+        return mdArray;
+    }
+
     @Override
     public boolean equals(Equatable otherObj){
 
@@ -105,7 +155,80 @@ class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixDouble>,
 
     @Override
     public void multiplyWith(SupportsUniversalMultiplication target) {
-        target.multiplySelfBy(this);
+        target.multiplySelfBy(this.getRawValues());
     }
 
+    @Override
+    public Optional<MatrixDouble> add(SupportsBinaryOperations toSelf) {
+        MatrixDouble mDouble;
+        if(!(toSelf instanceof MatrixDouble)){
+            return Optional.empty();
+        }
+        mDouble = (MatrixDouble)toSelf;
+        return Optional.of(new MatrixDouble(this.getValue() + mDouble.getValue()));
+    }
+
+    @Override
+    public Optional<MatrixDouble> subtract(SupportsBinaryOperations toSelf) {
+        MatrixDouble mDouble;
+        if(!(toSelf instanceof MatrixDouble)){
+            return Optional.empty();
+        }
+        mDouble = (MatrixDouble)toSelf;
+        return Optional.of(new MatrixDouble(this.getValue() - mDouble.getValue()));
+    }
+
+    @Override
+    public Optional<MatrixDouble> multiply(SupportsBinaryOperations toSelf) {
+        MatrixDouble mDouble;
+        if(!(toSelf instanceof MatrixDouble)){
+            return Optional.empty();
+        }
+        mDouble = (MatrixDouble)toSelf;
+        return Optional.of(new MatrixDouble(this.getValue() * mDouble.getValue()));
+    }
+
+    @Override
+    public Optional<MatrixDouble> multiply(UniversalMultiplier toSelf) {
+        if(toSelf.getRawValues().length > 1){
+            return Optional.empty();
+        }else{
+            return Optional.of(new MatrixDouble(toSelf.getRawValues()[0] * this.getValue().doubleValue()));
+        }
+    }
+
+    @Override
+    public Optional<MatrixDouble> divide(SupportsBinaryOperations toSelf) {
+        MatrixDouble mDouble;
+        if(!(toSelf instanceof MatrixDouble)){
+            return Optional.empty();
+        }
+        mDouble = (MatrixDouble)toSelf;
+        return Optional.of(new MatrixDouble(this.getValue() / mDouble.getValue()));
+    }
+
+    @Override
+    public double[] getRawValues() {
+        double[] value = new double[0];
+        value[0] = getValue();
+        return value;
+    }
+
+    @Override
+    public void multiplySelfBy(double[] multiplier) {
+        for(double val : multiplier){
+            value *= val;
+        }
+    }
+
+
+    @Override
+    public MatrixDouble zeroValueInstance() {
+        return new MatrixDouble(0);
+    }
+
+    @Override
+    public MatrixDouble unityValueInstance() {
+        return new MatrixDouble(1);
+    }
 }

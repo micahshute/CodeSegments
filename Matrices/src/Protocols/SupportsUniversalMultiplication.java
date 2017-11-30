@@ -2,6 +2,6 @@ package Protocols;
 
 public interface SupportsUniversalMultiplication {
 
-    public void multiplySelfBy(UniversalMultiplier multiplier);
+    public void multiplySelfBy(double[] multiplier);
 
 }

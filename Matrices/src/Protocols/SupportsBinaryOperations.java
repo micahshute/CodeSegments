@@ -3,7 +3,13 @@ package Protocols;
 //import java.util.function.*;
 import java.util.Optional;
 
-public interface SupportsBinaryOperations<T> {
+public interface SupportsBinaryOperations<T extends SupportsBinaryOperations<T>> extends SupportsUniversalMultiplication {
+
+
+    public abstract T unityValueInstance();
+
+    public abstract T zeroValueInstance();
+
 
     Optional<T> performBinary(FailableBinaryOperator<T> operation, T onSelfTo);
 
@@ -15,4 +21,11 @@ public interface SupportsBinaryOperations<T> {
 
 //    FailableBinaryOperator<T> getSupportedBinaryOperation(SupportedOperationsEnumeration<FailableBinaryOperator<T>> supportedOperation);
 
+    Optional<T> add(T toSelf);
+    Optional<T> subtract(T toSelf);
+    Optional<T> multiply(T toSelf);
+    Optional<T> multiply(UniversalMultiplier toSelf);
+    Optional<T> divide(T toSelf);
+
+    public String toString();
 }
