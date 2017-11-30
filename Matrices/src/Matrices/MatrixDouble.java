@@ -159,7 +159,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
     }
 
     @Override
-    public Optional<MatrixDouble> add(SupportsBinaryOperations toSelf) {
+    public Optional<MatrixDouble> add(MatrixDouble toSelf) {
         MatrixDouble mDouble;
         if(!(toSelf instanceof MatrixDouble)){
             return Optional.empty();
@@ -169,7 +169,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
     }
 
     @Override
-    public Optional<MatrixDouble> subtract(SupportsBinaryOperations toSelf) {
+    public Optional<MatrixDouble> subtract(MatrixDouble toSelf) {
         MatrixDouble mDouble;
         if(!(toSelf instanceof MatrixDouble)){
             return Optional.empty();
@@ -179,7 +179,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
     }
 
     @Override
-    public Optional<MatrixDouble> multiply(SupportsBinaryOperations toSelf) {
+    public Optional<MatrixDouble> multiply(MatrixDouble toSelf) {
         MatrixDouble mDouble;
         if(!(toSelf instanceof MatrixDouble)){
             return Optional.empty();
@@ -198,7 +198,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
     }
 
     @Override
-    public Optional<MatrixDouble> divide(SupportsBinaryOperations toSelf) {
+    public Optional<MatrixDouble> divide(MatrixDouble toSelf) {
         MatrixDouble mDouble;
         if(!(toSelf instanceof MatrixDouble)){
             return Optional.empty();
