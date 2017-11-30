@@ -4,6 +4,14 @@ import java.util.*;
 
 public class ComplexNumber extends Vector implements SupportsBinaryOperations<ComplexNumber>{
 
+    public static ComplexNumber getZeroValueInstance(){
+        return new ComplexNumber(0,0);
+    }
+
+    public static ComplexNumber getUnityValueInstance(){
+        return new ComplexNumber(1,0);
+    }
+
 
     //MARK: Private methods
 
@@ -214,5 +222,95 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
 //    @Override
     public FailableBinaryOperator<ComplexNumber> getSupportedBinaryOperation(SupportedOperationsEnumeration<FailableBinaryOperator<ComplexNumber>> supportedOperation) {
         return supportedOperation.getOperationFunction();
+    }
+
+    @Override
+    public Optional<ComplexNumber> multiply(ComplexNumber toSelf) {
+
+        Optional<ComplexNumber> complexNumber = (toSelf instanceof ComplexNumber) ? Optional.of((ComplexNumber)toSelf) : Optional.empty();
+
+        if(complexNumber.isPresent()) {
+            complexNumber = ComplexNumber.BinaryOperation.MULTIPLY.getOperationFunction().apply(this, complexNumber.get());
+        }
+
+        return complexNumber;
+    }
+
+    @Override
+    public Optional<ComplexNumber> multiply(UniversalMultiplier toSelf) {
+
+        Optional<ComplexNumber> complexNumber;
+        double magnitude = this.getMagnitude();
+        Angle angle = new Angle(this.getAngleInDegrees(), true);
+        for(double rawValue : toSelf.getRawValues()){
+            magnitude = magnitude * rawValue;
+        }
+
+        complexNumber = Optional.of(new ComplexNumber(magnitude, angle));
+
+        return complexNumber;
+    }
+
+    @Override
+    public Optional<ComplexNumber> add(ComplexNumber toSelf) {
+
+        Optional<ComplexNumber> complexNumber = (toSelf instanceof ComplexNumber) ? Optional.of((ComplexNumber) toSelf) : Optional.empty();
+
+        if(complexNumber.isPresent()){
+            complexNumber = ComplexNumber.BinaryOperation.ADD.getOperationFunction().apply(this,complexNumber.get());
+        }
+
+        return complexNumber;
+    }
+
+    @Override
+    public Optional<ComplexNumber> subtract(ComplexNumber toSelf) {
+        Optional<ComplexNumber> complexNumber = (toSelf instanceof ComplexNumber) ? Optional.of((ComplexNumber)toSelf) : Optional.empty();
+
+        if(complexNumber.isPresent()){
+            complexNumber = BinaryOperation.SUBTRACT.getOperationFunction().apply(this, complexNumber.get());
+        }
+
+        return complexNumber;
+    }
+
+    @Override
+    public Optional<ComplexNumber> divide(ComplexNumber toSelf) {
+
+        Optional<ComplexNumber> complexNumber = (toSelf instanceof ComplexNumber) ? Optional.of((ComplexNumber) toSelf) : Optional.empty();
+
+        if(complexNumber.isPresent()){
+            complexNumber = BinaryOperation.DIVIDE.getOperationFunction().apply(this, complexNumber.get());
+        }
+
+        return complexNumber;
+    }
+
+    @Override
+    public void multiplySelfBy(double[] multiplier) {
+
+        Optional<ComplexNumber> complexNumber;
+        double magnitude = this.getMagnitude();
+        Angle angle = new Angle(this.getAngleInDegrees(), true);
+
+        for(double rawValue : multiplier){
+            magnitude = magnitude * rawValue;
+        }
+
+        complexNumber = Optional.of(new ComplexNumber(magnitude, angle));
+        this.setReal(complexNumber.get().getReal());
+        this.setImaginary(complexNumber.get().getImaginary());
+
+
+    }
+
+    @Override
+    public ComplexNumber zeroValueInstance() {
+        return new ComplexNumber(0,0);
+    }
+
+    @Override
+    public ComplexNumber unityValueInstance() {
+        return new ComplexNumber(1,0);
     }
 }

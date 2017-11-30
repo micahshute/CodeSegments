@@ -509,6 +509,54 @@ public class Matrix implements Equatable, Invertable, Displayable, SupportsBinar
         return supportedOperation.getOperationFunction();
     }
 
+    @Override
+    public Matrix zeroValueInstance() {
+        double[][] zeroValue = {{0}};
+        return new Matrix(zeroValue);
+    }
+
+    @Override
+    public Matrix unityValueInstance() {
+        double[][] unityValue = {{1}};
+        return new Matrix(unityValue);
+    }
+
+    @Override
+    public Optional<Matrix> add(Matrix toSelf) {
+        return SupportedBinaryOperations.ADD.getOperationFunction().apply(this,toSelf);
+    }
+
+    @Override
+    public Optional<Matrix> subtract(Matrix toSelf) {
+        return SupportedBinaryOperations.SUBTRACT.getOperationFunction().apply(this,toSelf);
+    }
+
+    @Override
+    public Optional<Matrix> multiply(UniversalMultiplier toSelf) {
+        double[][] newValues = new double[this.getValues().length][this.getValues()[0].length];
+        double[] multiplyBy = toSelf.getRawValues();
+
+        for(int i = 0; i < this.getValues().length; i++){
+            for(int j = 0; j < this.getValues()[i].length; j++){
+                for(double multBy : multiplyBy){
+                    newValues[i][j] += this.getValues()[i][j] * multBy;
+                }
+            }
+        }
+
+        return Optional.of(new Matrix(newValues));
+    }
+
+    @Override
+    public Optional<Matrix> multiply(Matrix toSelf) {
+        return SupportedBinaryOperations.MULTIPLY.getOperationFunction().apply(this, toSelf);
+    }
+
+    @Override
+    public Optional<Matrix> divide(Matrix toSelf) {
+        return Optional.empty();
+    }
+
     //MARK: Public methods
 
     public boolean dimensionsAreEqual(Matrix comparedTo){
@@ -519,6 +567,22 @@ public class Matrix implements Equatable, Invertable, Displayable, SupportsBinar
         }
     }
 
+    @Override
+    public void multiplySelfBy(double[] multiplier) {
+
+        double[][] newValues = new double[this.getValues().length][this.getValues()[0].length];
+
+
+        for(int i = 0; i < this.getValues().length; i++){
+            for(int j = 0; j < this.getValues()[i].length; j++){
+                for(double multBy : multiplier){
+                    newValues[i][j] += this.getValues()[i][j] * multBy;
+                }
+            }
+        }
+
+        this.values = newValues;
+    }
 
     public boolean canMultiplyWith(Matrix multiplierMatrix) {
         if (this.getNumberOfColumns() != multiplierMatrix.getNumberOfRows()) {
