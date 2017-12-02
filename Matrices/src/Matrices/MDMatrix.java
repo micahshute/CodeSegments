@@ -243,11 +243,14 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
 
             List<List<SupportsBinaryOperations>> newArrayValues = new ArrayList<>();
+           // List<List<SupportsBinaryOperations>> lhsValues = lhs.getValues().stream
 
             for(int rowNumber = 0; rowNumber < lhs.getNumberOfRows(); rowNumber++){
+                newArrayValues.add(new ArrayList<SupportsBinaryOperations>());
                 for(int columnNumber = 0; columnNumber < lhs.getNumberOfColumns(); columnNumber++){
-                    if(lhs.getValues().get(rowNumber).get(columnNumber).add(rhs.getValues().get(rowNumber).get(columnNumber)).isPresent()){
-                        newArrayValues.get(rowNumber).add(columnNumber, (SupportsBinaryOperations) lhs.getValues().get(rowNumber).get(columnNumber).add(rhs.getValues().get(rowNumber).get(columnNumber)).get());
+                    Optional<SupportsBinaryOperations> sum= lhs.getValues().get(rowNumber).get(columnNumber).add(rhs.getValues().get(rowNumber).get(columnNumber));
+                    if(sum.isPresent()){
+                        newArrayValues.get(rowNumber).add(columnNumber, sum.get());
                     }else{
                         return Optional.empty();
                     }
@@ -271,9 +274,11 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             List<List<SupportsBinaryOperations>> newArrayValues = new ArrayList<>();
 
             for(int rowNumber = 0; rowNumber < lhs.getNumberOfRows(); rowNumber++){
+                newArrayValues.add(new ArrayList<>());
                 for(int columnNumber = 0; columnNumber < lhs.getNumberOfColumns(); columnNumber++){
-                    if(lhs.getValues().get(rowNumber).get(columnNumber).add(rhs.getValues().get(rowNumber).get(columnNumber)).isPresent()){
-                        newArrayValues.get(rowNumber).add(columnNumber, (SupportsBinaryOperations) lhs.getValues().get(rowNumber).get(columnNumber).subtract(rhs.getValues().get(rowNumber).get(columnNumber)).get());
+                    Optional<SupportsBinaryOperations> difference = lhs.getValues().get(rowNumber).get(columnNumber).subtract(rhs.getValues().get(rowNumber).get(columnNumber));
+                    if(difference.isPresent()){
+                        newArrayValues.get(rowNumber).add(columnNumber, difference.get());
                     }else{
                         return Optional.empty();
                     }
@@ -293,12 +298,24 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 return Optional.empty();
             }
 
-            List<List<SupportsBinaryOperations>> newArrayValues = new ArrayList<>();
+            List<List<SupportsBinaryOperations>> newArrayValues = new ArrayList<>(lhs.getNumberOfRows());
+            //intialize list as zero value instances
+
+            for(int ansRow = 0; ansRow < lhs.getNumberOfRows(); ansRow++){
+                newArrayValues.add(new ArrayList<>());
+                for(int ansCol = 0; ansCol < rhs.getNumberOfColumns(); ansCol++){
+                    newArrayValues.get(ansRow).add(lhs.getValues().get(0).get(0).zeroValueInstance());
+                }
+            }
+
+
+
 
             for(int lhsAnsRow = 0; lhsAnsRow < lhs.getNumberOfRows(); lhsAnsRow++) {
                 for (int rhsAnsColumn = 0; rhsAnsColumn < rhs.getNumberOfColumns(); rhsAnsColumn++){
                     for (int lhsColumnRhsRow = 0; lhsColumnRhsRow < lhs.getNumberOfColumns(); lhsColumnRhsRow++) {
                         newArrayValues.get(lhsAnsRow).add(rhsAnsColumn, (SupportsBinaryOperations) newArrayValues.get(lhsAnsRow).get(rhsAnsColumn).add((SupportsBinaryOperations) lhs.getValues().get(lhsAnsRow).get(lhsColumnRhsRow).multiply(rhs.getValues().get(lhsColumnRhsRow).get(rhsAnsColumn)).get()).get());
+                        newArrayValues.get(lhsAnsRow).remove(rhsAnsColumn + 1);
                     }
                 }
             }
@@ -324,6 +341,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
         public FailableBinaryOperator<MDMatrix<? extends SupportsBinaryOperations>> getOperationFunction() {
             return operation;
         }
+
     }
 
 
@@ -369,6 +387,24 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
     }
 
+//    public MDMatrix(Matrix matrix) throws IllegalArgumentException{
+//
+//        List<List<MatrixDouble>> mdValues = new ArrayList<>();
+//        int rowVal = 0;
+//        for(double[] row : matrix.getValues()){
+//            mdValues.add(new ArrayList<MatrixDouble>());
+//            for(double value : row){
+//                mdValues.get(rowVal).add(new MatrixDouble(value));
+//            }
+//            rowVal++;
+//        }
+//        try{
+//            this.values = mdValues;
+//        }
+//
+//
+//    }
+
     public MDMatrix(T... array) throws IllegalArgumentException{
         List<List<T>> row = new ArrayList<>();
         List<T> list = new ArrayList<>();
@@ -401,7 +437,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
         }
 
-        this.values = twoDList;
+        this.values = new ArrayList<>(twoDList);
         this.numberOfRows = twoDList.size();
         this.numberOfColumns = rowSize;
         this.rank = 0;
@@ -651,7 +687,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
         Optional<MDMatrix<T>> sum;
         Optional<MDMatrix<? extends SupportsBinaryOperations>> sumToCheck = MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(this,toSelf);
         if(sumToCheck.isPresent()){
-            sum = this.createMatrixOfSameType(sumToCheck.get());
+            sum = createMatrixOfSameType(sumToCheck.get());
         }else{
             sum = Optional.empty();
         }
@@ -737,15 +773,13 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
         try{
             List<List<T>> newValues = new ArrayList<>();
-            List<T> newRow = new ArrayList<>();
+            int row = 0;
             for(List<? extends SupportsBinaryOperations> genericList : genericMatrix.getValues()){
+                newValues.add(new ArrayList<T>());
                 for(SupportsBinaryOperations genericValue : genericList){
-                    newRow.add((T) genericValue);
+                    newValues.get(row).add((T) genericValue);
                 }
-                newValues.add(newRow);
-                for(int i = 0; i < newRow.size(); i++){
-                    newRow.remove(0);
-                }
+                row++;
             }
 
             return Optional.of(new MDMatrix<>(newValues));
@@ -827,4 +861,22 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
         return;
     }
 
+//    @Override
+//    public MDMatrix<T> cloneOf(MDMatrix<T> self) {
+//        List<List<T>> newValues = new ArrayList<>();
+//        List<T> newValue = new ArrayList<>();
+//        for(List<T> row : this.getValues()){
+//            for(T value: row){
+//                T clonedValue = (T) value.cloneOf(value);
+//                newValue.add(clonedValue);
+//            }
+//            newValues.add(newValue);
+//            int size = newValue.size();
+//            for(int i = 0; i < size; i++){
+//                newValue.remove(0);
+//            }
+//        }
+//
+//        return new MDMatrix(newValues);
+//    }
 }

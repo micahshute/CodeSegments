@@ -3,7 +3,7 @@ package Protocols;
 //import java.util.function.*;
 import java.util.Optional;
 
-public interface SupportsBinaryOperations<T extends SupportsBinaryOperations<T>> extends SupportsUniversalMultiplication {
+public interface SupportsBinaryOperations<T extends SupportsBinaryOperations<T>> extends SupportsUniversalMultiplication, CanClone<T> {
 
 
     public abstract T unityValueInstance();

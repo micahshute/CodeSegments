@@ -1,3 +1,7 @@
+import Matrices.*;
+import Protocols.*;
+import java.util.*;
+
 public class Test {
 
 
@@ -24,5 +28,94 @@ public class Test {
         System.out.println(ComplexNumber.BinaryOperation.DIVIDE.getOperationFunction().apply(num,num2).get());
 
         System.out.println(mult);
+        double[][] values = {{1,2,3},
+                            {4,5,6},
+                            {7,8,9}};
+        double[][] values1 = {{2,4,6},
+                              {8,2,4},
+                                {6,8,10}};
+        Matrix matrix = new Matrix(values);
+        Matrix matrix1 = new Matrix(values1);
+        Matrix sum = Matrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(matrix,matrix1).get();
+        sum.displaySelf(2);
+
+
+        List<List<ComplexNumber>> complexValues= new ArrayList<>();
+        List<List<ComplexNumber>> complexValues1 = new ArrayList<>();
+        List<ComplexNumber> valueHelper = new ArrayList<>();
+        List<ComplexNumber> valueHelper1 = new ArrayList();
+
+        valueHelper.add(new ComplexNumber(1,0));
+        valueHelper.add(new ComplexNumber(1,1));
+        valueHelper.add(new ComplexNumber(2,1));
+        System.out.println(valueHelper);
+        complexValues.add(new ArrayList<>(valueHelper));
+
+        for(List<ComplexNumber> row : complexValues){
+            for(ComplexNumber value : row){
+                System.out.print("  ");
+                value.displaySelf();
+                System.out.print("  ");
+            }
+            System.out.println();
+        }
+        clear(valueHelper);
+        System.out.println(valueHelper);
+
+        valueHelper.add(new ComplexNumber(3,1));
+        valueHelper.add(new ComplexNumber(2,3));
+        valueHelper.add(new ComplexNumber(3,2));
+        complexValues.add(new ArrayList<>(valueHelper));
+        System.out.println(valueHelper);
+
+
+        for(List<ComplexNumber> row : complexValues){
+            for(ComplexNumber value : row){
+                System.out.print("  ");
+                value.displaySelf();
+                System.out.print("  ");
+            }
+            System.out.println();
+        }
+
+        clear(valueHelper);
+        System.out.println(valueHelper);
+
+        valueHelper.add(new ComplexNumber(2,4));
+        valueHelper.add(new ComplexNumber(4,6));
+        valueHelper.add(new ComplexNumber(6,8));
+        System.out.println(valueHelper);
+
+        complexValues.add(new ArrayList<>(valueHelper));
+
+        for(List<ComplexNumber> row : complexValues){
+            for(ComplexNumber value : row){
+                System.out.print("  ");
+                value.displaySelf();
+                System.out.print("  ");
+            }
+            System.out.println();
+        }
+        MDMatrix<ComplexNumber> complexMatrix = new MDMatrix<>(complexValues);
+        complexMatrix.displaySelf();
+
+        //Optional<MDMatrix<ComplexNumber>> summation = MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix);
+        MDMatrix<ComplexNumber> summ = complexMatrix.add(complexMatrix).get();
+        summ.displaySelf();
+        Optional<MDMatrix<ComplexNumber>> difference = complexMatrix.subtract((complexMatrix));
+        difference.ifPresent(MDMatrix::displaySelf);
+        Optional<MDMatrix<ComplexNumber>> product = complexMatrix.multiply(complexMatrix);
+        product.ifPresent(MDMatrix::displaySelf);
+
+    }
+
+    static void clear(List list){
+        int size = list.size();
+        System.out.println("List size:  " + list.size());
+        for(int i = 0; i < size; i++){
+            System.out.println("i = " + i);
+            list.remove(0);
+            System.out.println("removed");
+        }
     }
 }

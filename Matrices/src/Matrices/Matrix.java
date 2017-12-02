@@ -633,5 +633,8 @@ public class Matrix implements Equatable, Invertable, Displayable, SupportsBinar
     }
 
 
-
+//    @Override
+//    public Matrix cloneOf(Matrix self) {
+//        return new Matrix(this.getValues());
+//    }
 }
