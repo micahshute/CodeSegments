@@ -1,3 +1,4 @@
+package MDEntities;
 
 import Protocols.*;
 import java.util.*;
@@ -129,7 +130,7 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
     }
 
 
-    //TODO: make abstract superclass Vector implement these methods instead
+    //TODO: make abstract superclass MDEntities.Vector implement these methods instead
 
 //    public double getMagnitude(){
 //        return Math.sqrt((real*real) + (imaginary * imaginary));

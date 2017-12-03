@@ -5,7 +5,7 @@
 //
 //import java.util.Optional;
 //
-//public class MSMatrix<T extends SupportsBinaryOperations> implements Equatable, Invertable, Displayable, SupportsBinaryOperations<MSMatrix<T extends SupportsBinaryOperations>>, SupportsUnaryOperations<MSMatrix> {
+//public class MSMatrix implements Equatable, Invertable, Displayable, SupportsBinaryOperations<MSMatrix>, SupportsUnaryOperations<MSMatrix> {
 //
 //    //MARK: Properties
 //
@@ -285,7 +285,7 @@
 //
 //    /* MARK: Constructor */
 //
-//    public MSMatrix(T[][] twoDArray) throws IllegalArgumentException{
+//    public MSMatrix(SupportsBinaryOperations[][] twoDArray) throws IllegalArgumentException{
 //
 //        int rowSize = 0;
 //        boolean firstRow = true;
@@ -328,7 +328,7 @@
 //    }
 //
 //
-//    public T[][] getValues(){
+//    public SupportsBinaryOperations[][] getValues(){
 //
 //        return (T[][]) values;
 //    }

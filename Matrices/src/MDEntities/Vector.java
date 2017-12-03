@@ -1,3 +1,5 @@
+package MDEntities;
+
 import Protocols.*;
 import java.util.*;
 
@@ -35,7 +37,7 @@ public abstract class Vector implements Displayable, Equatable, Invertable{
     }
 
 
-//    protected enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<Vector>>{
+//    protected enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<MDEntities.Vector>>{
 //
 //        ADD("+", (lhs, rhs) -> {
 //
@@ -56,19 +58,19 @@ public abstract class Vector implements Displayable, Equatable, Invertable{
 //        SUBTRACT("-", (lhs, rhs) -> {
 //            double real = lhs.getReal() - rhs.getReal();
 //            double imaginary = lhs.getImaginary() - rhs.getImaginary();
-//            return Optional.of(new ComplexNumber(real, imaginary));
+//            return Optional.of(new MDEntities.ComplexNumber(real, imaginary));
 //
 //        });
 //
 //        private final String symbol;
-//        private final FailableBinaryOperator<Vector> operation;
-//        private BinaryOperation(String symbol, FailableBinaryOperator<Vector> operation){
+//        private final FailableBinaryOperator<MDEntities.Vector> operation;
+//        private BinaryOperation(String symbol, FailableBinaryOperator<MDEntities.Vector> operation){
 //            this.symbol = symbol;
 //            this.operation = operation;
 //        }
 //
 //        @Override
-//        public FailableBinaryOperator<ComplexNumber> getOperationFunction(){
+//        public FailableBinaryOperator<MDEntities.ComplexNumber> getOperationFunction(){
 //            return operation;
 //        }
 //
@@ -88,7 +90,7 @@ public abstract class Vector implements Displayable, Equatable, Invertable{
 
 //    public double getAngle(boolean degreeMode){
 //
-//        Angle angle = new Angle(degreeMode);
+//        MDEntities.Angle angle = new MDEntities.Angle(degreeMode);
 //
 //        if(real == 0.0){
 //            if(imaginary > 0.0){
@@ -133,19 +135,19 @@ public abstract class Vector implements Displayable, Equatable, Invertable{
 
 
 //
-//    public Optional<ComplexNumber> getInverse(){
+//    public Optional<MDEntities.ComplexNumber> getInverse(){
 //
-//        return Optional.of((new ComplexNumber(-1 * real, -1 * imaginary)));
+//        return Optional.of((new MDEntities.ComplexNumber(-1 * real, -1 * imaginary)));
 //    }
 
 //
 //    @Override
 //    public boolean equals(Equatable complexNumberObject){
 //
-//        ComplexNumber complexNumber;
+//        MDEntities.ComplexNumber complexNumber;
 //
-//        if(complexNumber instanceof ComplexNumber){
-//            complexNumber = (ComplexNumber)complexNumberObject;
+//        if(complexNumber instanceof MDEntities.ComplexNumber){
+//            complexNumber = (MDEntities.ComplexNumber)complexNumberObject;
 //        }else{
 //            return false;
 //        }

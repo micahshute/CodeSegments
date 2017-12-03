@@ -17,7 +17,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
     //MARK: Unary Operations Enum
 
-    public enum SupportedUnaryOperations implements SupportedOperationsEnumeration<FailableUnaryOperator<MDMatrix<SupportsBinaryOperations>>>{
+    public enum SupportedUnaryOperations implements SupportedOperationsEnumeration<FailableUnaryOperator<MDMatrix<? extends SupportsBinaryOperations>>>{
 
 
 
@@ -26,8 +26,8 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             if(matrix.getNumberOfRows() != matrix.getNumberOfColumns()){
                 return Optional.empty();
             }
-
-            return determinantFinder(matrix);
+            return Optional.empty()
+            //return determinantFinder(matrix);
 
         }),
 
@@ -120,9 +120,9 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
 
         private final String symbol;
-        private final FailableUnaryOperator<MDMatrix<SupportsBinaryOperations>> operator;
+        private final FailableUnaryOperator<MDMatrix<? extends SupportsBinaryOperations>> operator;
 
-        private SupportedUnaryOperations(String symbol, FailableUnaryOperator<MDMatrix<SupportsBinaryOperations>> operator){
+        private SupportedUnaryOperations(String symbol, FailableUnaryOperator<MDMatrix<? extends SupportsBinaryOperations>> operator){
 
             this.symbol = symbol;
             this.operator = operator;

@@ -1,3 +1,4 @@
+import MDEntities.ComplexNumber;
 import Matrices.*;
 import Protocols.*;
 import java.util.*;
@@ -24,7 +25,7 @@ public class Test {
         System.out.println(num2.getAngle(false));
 
         ComplexNumber mult = ComplexNumber.BinaryOperation.MULTIPLY.getOperationFunction().apply(num,num2).get();
-        System.out.println("Magnitude " + mult.getMagnitude() + " Angle " + mult.getAngleInDegrees() + " Real " + mult.getReal() + " Imaginary " + mult.getImaginary());
+        System.out.println("Magnitude " + mult.getMagnitude() + " MDEntities.Angle " + mult.getAngleInDegrees() + " Real " + mult.getReal() + " Imaginary " + mult.getImaginary());
         System.out.println(ComplexNumber.BinaryOperation.DIVIDE.getOperationFunction().apply(num,num2).get());
 
         System.out.println(mult);
@@ -99,13 +100,18 @@ public class Test {
         MDMatrix<ComplexNumber> complexMatrix = new MDMatrix<>(complexValues);
         complexMatrix.displaySelf();
 
-        //Optional<MDMatrix<ComplexNumber>> summation = MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix);
+        //Optional<MDMatrix<MDEntities.ComplexNumber>> summation = MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix);
         MDMatrix<ComplexNumber> summ = complexMatrix.add(complexMatrix).get();
         summ.displaySelf();
         Optional<MDMatrix<ComplexNumber>> difference = complexMatrix.subtract((complexMatrix));
         difference.ifPresent(MDMatrix::displaySelf);
         Optional<MDMatrix<ComplexNumber>> product = complexMatrix.multiply(complexMatrix);
         product.ifPresent(MDMatrix::displaySelf);
+        MDMatrix<ComplexNumber> addTest = (MDMatrix<ComplexNumber>) MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix).get();
+        addTest.displaySelf();
+        MDMatrix<SupportsBinaryOperations> notherTest = (MDMatrix<SupportsBinaryOperations>) MDMatrix.SupportedBinaryOperations.MULTIPLY.getOperationFunction().apply(complexMatrix,complexMatrix).get();
+        notherTest.displaySelf();
+        MDMatrix<ComplexNumber> againTest = complexMatrix.createMatrixOfSameType(MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix).get()).get();
 
     }
 
