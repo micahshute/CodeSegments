@@ -2,7 +2,7 @@ package Protocols;
 
 import java.util.Optional;
 
-public interface SupportsUnaryOperations<T> {
+public interface SupportsUnaryOperations<T extends SupportsBinaryOperations<T>> {
 
     Optional<T> performUnary(FailableUnaryOperator<T> operation);
 

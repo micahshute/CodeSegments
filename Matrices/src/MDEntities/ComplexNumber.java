@@ -42,7 +42,7 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
 
     //MARK: ENUMS
 
-    protected enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<ComplexNumber>>{
+    public enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<ComplexNumber>>{
 
         ADD("+", (lhs, rhs) -> {
             double real = lhs.getReal() + rhs.getReal();

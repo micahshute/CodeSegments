@@ -1,6 +1,6 @@
 package Protocols;
 
-public interface SupportsMatrixUnaryOperations<T> extends SupportsUnaryOperations<T> {
-
-
-}
+//public interface SupportsMatrixUnaryOperations<T> extends SupportsUnaryOperations<T> {
+//
+//
+//}

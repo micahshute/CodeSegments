@@ -23,11 +23,13 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
         DETERMINANT("det",(matrix) -> {
 
+
+
             if(matrix.getNumberOfRows() != matrix.getNumberOfColumns()){
                 return Optional.empty();
             }
-            return Optional.empty()
-            //return determinantFinder(matrix);
+            //return Optional.empty();
+            return determinantFinder(matrix);
 
         }),
 
@@ -46,6 +48,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
 
         MINOR("minor", (matrix) -> {
+
             if(matrix.getNumberOfColumns() != matrix.getNumberOfRows()){
                 return Optional.empty();
             }
@@ -68,7 +71,8 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
 
             List<List<SupportsBinaryOperations>> cofactorMatrixValues = new ArrayList<List<SupportsBinaryOperations>>(); //([matrix.getNumberOfRows()],[matrix.getNumberOfColumns()];
-            List<List<SupportsBinaryOperations>> minorMatrixValues = SupportedUnaryOperations.MINOR.getOperationFunction().apply(matrix).get().getValues();
+            //TODO: Safer Cast
+            List<List<SupportsBinaryOperations>> minorMatrixValues =  ((MDMatrix<SupportsBinaryOperations>)SupportedUnaryOperations.MINOR.getOperationFunction().apply(matrix).get()).getValues();
 
             for(int row = 0; row < matrix.getNumberOfRows(); row++){
                 for(int col = 0; col < matrix.getNumberOfColumns(); col++){
@@ -89,7 +93,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 return Optional.empty();
             }
 
-            return SupportedUnaryOperations.TRANSPOSE.getOperationFunction().apply(SupportedUnaryOperations.COFACTOR.getOperationFunction().apply(matrix).get());
+            return  SupportedUnaryOperations.TRANSPOSE.getOperationFunction().apply(SupportedUnaryOperations.COFACTOR.getOperationFunction().apply(matrix).get());
 
         }),
 
@@ -100,14 +104,18 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 return Optional.empty();
             }
             //TODO: Check isPresent() prior to .get() commands
-            SupportsBinaryOperations determinant = SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(matrix).get().getValues().get(0).get(0);
-            List<List<SupportsBinaryOperations>> adjointToInverse = SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get().getValues();
+            SupportsBinaryOperations determinant = matrix.createMatrixOfSameType(SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(matrix).get()).get().getValues().get(0).get(0);
+            MDMatrix<? extends SupportsBinaryOperations> adjToInvMatrix = matrix.createMatrixOfSameType(SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get()).get();
+            List<List<? extends SupportsBinaryOperations>> adjointToInverse = new ArrayList<>(adjToInvMatrix.getValues());
+            //List<List<SupportsBinaryOperations>> adjointToInverse = SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get().getValues();
 
             for(int row = 0; row < matrix.getNumberOfRows(); row++){
                 for(int col = 0; col < matrix.getNumberOfColumns(); col++){
-                    adjointToInverse.get(row).get(col).divide(determinant).ifPresent(x -> System.out.println(x));
-                    //adjointToInverse[row][col] = adjointToInverse[row][col].divide(determinant);
-                    //adjointToInverse.get(row).add(col, adjointToInverse.get(row).get(col).divide(determinant));
+
+//                    adjointToInverse[row][col] = adjointToInverse[row][col].divide(determinant);
+                   System.out.println(adjointToInverse.get(row).get(col));
+//                    adjointToInverse.get(row).add(col,adjointToInverse.get(row).get(col).divide(determinant));
+
                 }
             }
             return Optional.empty();
@@ -131,7 +139,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
         //private enum methods
 
-        private static Optional<MDMatrix<SupportsBinaryOperations>> minorMatrixForLocation(int row, int col, MDMatrix<SupportsBinaryOperations> matrix){
+        private static Optional<MDMatrix<? extends SupportsBinaryOperations>> minorMatrixForLocation(int row, int col, MDMatrix<? extends SupportsBinaryOperations> matrix){
             if((row > matrix.getNumberOfRows() - 1) || (col > matrix.getNumberOfColumns() - 1)){
                 return Optional.empty();
             }
@@ -167,11 +175,11 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 colPassed = false;
             }
 
-            return matrix.createMatrixOfSameType(new MDMatrix<SupportsBinaryOperations>(minorValues));
+            return Optional.of(new MDMatrix<SupportsBinaryOperations>(minorValues));
         }
 
 
-        private static Optional<MDMatrix<SupportsBinaryOperations>> determinantFinder(MDMatrix<SupportsBinaryOperations> matrix){
+        private static Optional<MDMatrix<? extends SupportsBinaryOperations>> determinantFinder(MDMatrix<? extends SupportsBinaryOperations> matrix){
 
 
             if(matrix.getNumberOfColumns() == 2){
@@ -196,7 +204,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 //SupportsBinaryOperations determinant = matrix.getValues()[0][0].zeroValueInstance();
                 SupportsBinaryOperations determinant = matrix.getValues().get(0).get(0).zeroValueInstance();
                 for(int column = 0; column < matrix.getNumberOfColumns(); column++){
-                    MDMatrix<SupportsBinaryOperations> minorMatrix = minorMatrixForLocation(0,column,matrix).get();
+                    MDMatrix<? extends SupportsBinaryOperations> minorMatrix = minorMatrixForLocation(0,column,matrix).get();
                     MatrixDouble matrixDouble = new MatrixDouble(Math.pow(-1,(column)));
                     Optional<SupportsBinaryOperations> multipliedValues;
                     //multipliedValues = matrix.getValues()[0][column].multiply(determinantFinder(minorMatrix).get().getValues()[0][0]);
@@ -212,7 +220,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
                 SupportsBinaryOperations[][] determinantValue = new SupportsBinaryOperations[1][1];
                 determinantValue[0][0] =  determinant;
-                return matrix.createMatrixOfSameType(new MDMatrix<SupportsBinaryOperations>(determinantValue));
+                return Optional.of(new MDMatrix<SupportsBinaryOperations>(determinantValue));
 
             }
 
@@ -221,7 +229,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
 
         @Override
-        public FailableUnaryOperator<MDMatrix<SupportsBinaryOperations>> getOperationFunction() {
+        public FailableUnaryOperator<MDMatrix<? extends SupportsBinaryOperations>> getOperationFunction() {
             return operator;
         }
 
@@ -602,7 +610,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
 
     public Optional<MDMatrix<T>> getInverse(){
-        SupportedOperationsEnumeration<FailableUnaryOperator<MDMatrix<SupportsBinaryOperations>>> requestedOperation = MDMatrix.SupportedUnaryOperations.INVERSE;
+        SupportedOperationsEnumeration<FailableUnaryOperator<MDMatrix<? extends SupportsBinaryOperations>>> requestedOperation = MDMatrix.SupportedUnaryOperations.INVERSE;
         //TODO: FIX THIS!!
         return Optional.empty();
         //return performUnary(requestedOperation, this);

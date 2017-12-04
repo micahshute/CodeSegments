@@ -43,7 +43,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
         this.value = value;
     }
 
-    private enum SupportedBinaryOperations implements SupportedOperationsEnumeration<FailableBinaryOperator<MatrixDouble>>{
+    public enum SupportedBinaryOperations implements SupportedOperationsEnumeration<FailableBinaryOperator<MatrixDouble>>{
 
         ADD("+", (lhs,rhs) -> {
             return Optional.of((new MatrixDouble((lhs.getValue().doubleValue() + rhs.getValue().doubleValue()))));
