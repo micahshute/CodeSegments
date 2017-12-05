@@ -114,7 +114,8 @@ public class Test {
         MDMatrix<ComplexNumber> againTest = complexMatrix.createMatrixOfSameType(MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix).get()).get();
 
         MDMatrix<ComplexNumber> unaryTest = (MDMatrix<ComplexNumber>) MDMatrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(complexMatrix).get();
-        System.out.println(unaryTest);
+        System.out.println(unaryTest.getValues().get(0));
+
 
 
     }

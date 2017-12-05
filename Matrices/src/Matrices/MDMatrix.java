@@ -1,5 +1,6 @@
 package Matrices;
 
+import MDEntities.ComplexNumber;
 import Protocols.*;
 import java.util.*;
 
@@ -145,7 +146,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
 
             //SupportsBinaryOperations[][] minorValues = new SupportsBinaryOperations[matrix.getNumberOfRows() -1][matrix.getNumberOfColumns() - 1];
-            List<List<SupportsBinaryOperations>> minorValues = new ArrayList<List<SupportsBinaryOperations>>();
+            List<List<SupportsBinaryOperations>> minorValues = initializeListOfLists(matrix.getNumberOfRows() - 1);
             boolean rowPassed = false;
             boolean colPassed = false;
 
@@ -168,7 +169,8 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                         parentCol = minorCol;
                     }
 
-                    minorValues.get(minorRow).add(minorCol, matrix.getValues().get(parentRow).get(parentCol));
+                    replaceValue(minorValues,minorRow,minorCol,matrix.getValues().get(parentRow).get(parentCol));
+                    //minorValues.get(minorRow).add(minorCol, matrix.getValues().get(parentRow).get(parentCol));
                     //minorValues[minorRow][minorCol] = matrix.getValues()[parentRow][parentCol];
 
                 }
@@ -176,6 +178,30 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
 
             return Optional.of(new MDMatrix<SupportsBinaryOperations>(minorValues));
+        }
+
+        private static List<List<SupportsBinaryOperations>> initializeListOfLists(int numOfRows){
+            List<List<SupportsBinaryOperations>> listOfLists = new ArrayList<>();
+            for(int i = 0; i < numOfRows; i++){
+                listOfLists.add(new ArrayList<SupportsBinaryOperations>());
+            }
+
+            return listOfLists;
+        }
+
+        private static void replaceValue(List<List<SupportsBinaryOperations>> ofListOfLists, int atRow, int atCol, SupportsBinaryOperations with){
+            if((ofListOfLists.size() - 1 ) < atRow){
+                ofListOfLists.add(atRow,new ArrayList<>());
+            }
+            if((ofListOfLists.get(atRow).size() - 1) < atCol){
+                for(int i = 0 ; i < (atCol - ofListOfLists.get(atRow).size() - 1);i++){
+                    ofListOfLists.get(atRow).add(new ComplexNumber(0,0));
+                }
+            }
+            ofListOfLists.get(atRow).add(atCol, with);
+            if(!((ofListOfLists.get(atRow).size() - 1) < (atCol + 1))) {
+                ofListOfLists.get(atRow).remove(atCol + 1);
+            }
         }
 
 
@@ -187,7 +213,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 //                Optional<SupportsBinaryOperations<? extends SupportsBinaryOperations>> multipleOne = matrix.getValues()[0][0].multiply(matrix.getValues()[1][1]);
 //                Optional<SupportsBinaryOperations<? extends SupportsBinaryOperations>> multipleTwo = matrix.getValues()[0][1].multiply(matrix.getValues()[1][0]);
 
-                List<List<SupportsBinaryOperations>> answer = new ArrayList<>();
+                List<List<SupportsBinaryOperations>> answer = initializeListOfLists(1);
                 Optional<SupportsBinaryOperations> multipleOne = matrix.getValues().get(0).get(0).multiply(matrix.getValues().get(1).get(1));
                 Optional<SupportsBinaryOperations> multipleTwo = matrix.getValues().get(0).get(1).multiply(matrix.getValues().get(1).get(0));
                 if(multipleOne.isPresent()  && multipleTwo.isPresent() && multipleOne.get().subtract(multipleTwo.get()).isPresent()) {

@@ -124,7 +124,7 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
             angle.setRadian(Math.atan(imaginary/real));
             return angle.getAngle();
         }else{
-            angle.setRadian(180 - Math.atan(imaginary/real));
+            angle.setRadian(Math.PI - Math.atan(imaginary/real));
             return angle.getAngle();
         }
     }
@@ -295,6 +295,10 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
         Angle angle = new Angle(this.getAngleInDegrees(), true);
 
         for(double rawValue : multiplier){
+            if(rawValue < 0){
+                angle.setDegree(angle.getDegree() + 180);
+                rawValue = -1 * rawValue;
+            }
             magnitude = magnitude * rawValue;
         }
 

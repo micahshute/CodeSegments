@@ -16,8 +16,11 @@ public class Angle {
 
         this.degreeMode = degreeMode;
 
-        if(degree > 360.0 || degree < -360.0){
+        if(degree < -360.0){
             throw new IllegalArgumentException();
+        }
+        if(degree > 360){
+            degree = degree % 360;
         }
         if(degree > 0){
             this.degree = degree;

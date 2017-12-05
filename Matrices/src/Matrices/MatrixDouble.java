@@ -209,7 +209,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
 
     @Override
     public double[] getRawValues() {
-        double[] value = new double[0];
+        double[] value = new double[1];
         value[0] = getValue();
         return value;
     }
