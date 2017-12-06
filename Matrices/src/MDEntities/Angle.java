@@ -83,10 +83,12 @@ public class Angle {
     }
 
     public void setDegree(double to){
-        if(degree > 360.0 || degree < -360.0){
+        if(to < -360.0){
             return;
         }
+
         if(degree > 0){
+            to = to % 360;
             this.degree = to;
         }else{
             this.degree = 360.0 + to;

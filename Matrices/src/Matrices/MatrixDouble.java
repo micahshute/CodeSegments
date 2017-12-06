@@ -221,6 +221,10 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
         }
     }
 
+    @Override
+    public String toString() {
+        return this.getValue().toString();
+    }
 
     @Override
     public MatrixDouble zeroValueInstance() {

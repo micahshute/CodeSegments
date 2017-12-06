@@ -40,6 +40,30 @@ public class Test {
         Matrix sum = Matrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(matrix,matrix1).get();
         sum.displaySelf(2);
 
+        Matrix determinant = Matrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(matrix1).get();
+        System.out.println();
+        System.out.println();
+        System.out.println("Real matrix");
+        determinant.displaySelf();
+
+        MatrixDouble[][] mdValues = new MatrixDouble[values1.length][values1[0].length];
+        int rowNum = 0;
+        for(double[] row : values1){
+            int colNum = 0;
+            for(double value : row){
+                mdValues[rowNum][colNum] = new MatrixDouble(value);
+                colNum++;
+            }
+            rowNum++;
+        }
+
+        MDMatrix<MatrixDouble> mdMatrix = new MDMatrix<>(mdValues);
+        //TODO: Start here
+       // MDMatrix<MatrixDouble> newDet = MDMatrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(mdMatrix);
+        System.out.println();
+        System.out.println();
+        System.out.println("Obj matrix");
+        mdMatrix.displaySelf();
 
         List<List<ComplexNumber>> complexValues= new ArrayList<>();
         List<List<ComplexNumber>> complexValues1 = new ArrayList<>();
@@ -114,6 +138,8 @@ public class Test {
         MDMatrix<ComplexNumber> againTest = complexMatrix.createMatrixOfSameType(MDMatrix.SupportedBinaryOperations.ADD.getOperationFunction().apply(complexMatrix,complexMatrix).get()).get();
 
         MDMatrix<ComplexNumber> unaryTest = (MDMatrix<ComplexNumber>) MDMatrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(complexMatrix).get();
+        System.out.println("Display self");
+        unaryTest.displaySelf();
         System.out.println(unaryTest.getValues().get(0));
 
 

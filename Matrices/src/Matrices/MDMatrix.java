@@ -229,6 +229,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
                 //SupportsBinaryOperations determinant = matrix.getValues()[0][0].zeroValueInstance();
                 SupportsBinaryOperations determinant = matrix.getValues().get(0).get(0).zeroValueInstance();
+
                 for(int column = 0; column < matrix.getNumberOfColumns(); column++){
                     MDMatrix<? extends SupportsBinaryOperations> minorMatrix = minorMatrixForLocation(0,column,matrix).get();
                     MatrixDouble matrixDouble = new MatrixDouble(Math.pow(-1,(column)));
@@ -409,8 +410,9 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             for(T value : row){
                 rowValues.add(value);
             }
-            rows.add(rowValues);
-            for(int i = 0; i< rowValues.size(); i++){
+            rows.add(new ArrayList<>(rowValues));
+            int size = rowValues.size();
+            for(int i = 0; i < size; i++){
                 rowValues.remove(0);
             }
         }
@@ -447,7 +449,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             list.add(value);
         }
 
-        row.add(list);
+        row.add(new ArrayList<>(list));
 
         this.values = row;
         this.numberOfRows = 1;
