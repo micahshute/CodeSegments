@@ -1,6 +1,7 @@
 package Matrices;
 
 import MDEntities.ComplexNumber;
+import MDEntities.MatrixDouble;
 import Protocols.*;
 import java.util.*;
 
@@ -80,6 +81,7 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
                     MatrixDouble negateOrNot = ((row + col) % 2 == 0) ? new MatrixDouble(1) : new MatrixDouble(-1);
                     minorMatrixValues.get(row).get(col).multiplySelfBy(negateOrNot.getRawValues());
+                    if(cofactorMatrixValues.size() < (row+1)){ cofactorMatrixValues.add(new ArrayList<SupportsBinaryOperations>());}
                     cofactorMatrixValues.get(row).add(col, minorMatrixValues.get(row).get(col)); //= minorMatrixValues[row][col];
                 }
             }
@@ -105,17 +107,19 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
                 return Optional.empty();
             }
             //TODO: Check isPresent() prior to .get() commands
-            SupportsBinaryOperations determinant = matrix.createMatrixOfSameType(SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(matrix).get()).get().getValues().get(0).get(0);
-            MDMatrix<? extends SupportsBinaryOperations> adjToInvMatrix = matrix.createMatrixOfSameType(SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get()).get();
-            List<List<? extends SupportsBinaryOperations>> adjointToInverse = new ArrayList<>(adjToInvMatrix.getValues());
-            //List<List<SupportsBinaryOperations>> adjointToInverse = SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get().getValues();
+            SupportsBinaryOperations determinant = SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(matrix).get().getValues().get(0).get(0);
+            MDMatrix<SupportsBinaryOperations> adjToInvMatrix = (MDMatrix<SupportsBinaryOperations>) SupportedUnaryOperations.ADJOINT.getOperationFunction().apply(matrix).get();
+            //List<List<SupportsBinaryOperations>> adjointToInverse = new ArrayList<>(adjToInvMatrix.getValues());
+            List<List<SupportsBinaryOperations>> adjointToInverse =  adjToInvMatrix.getValues();
 
             for(int row = 0; row < matrix.getNumberOfRows(); row++){
                 for(int col = 0; col < matrix.getNumberOfColumns(); col++){
 
 //                    adjointToInverse[row][col] = adjointToInverse[row][col].divide(determinant);
-                   System.out.println(adjointToInverse.get(row).get(col));
-//                    adjointToInverse.get(row).add(col,adjointToInverse.get(row).get(col).divide(determinant));
+//                   System.out.println(adjointToInverse.get(row).get(col));
+//                   System.out.println(determinant);
+
+                    adjointToInverse.get(row).set(col, (SupportsBinaryOperations) adjointToInverse.get(row).get(col).divide(determinant).get());
 
                 }
             }
@@ -552,6 +556,8 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
             }
             System.out.println();
         }
+
+        System.out.print("  ]");
     }
 
     public void displaySelf(){
@@ -915,4 +921,6 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 //
 //        return new MDMatrix(newValues);
 //    }
+
+
 }

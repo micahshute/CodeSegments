@@ -1,4 +1,5 @@
 import MDEntities.ComplexNumber;
+import MDEntities.MatrixDouble;
 import Matrices.*;
 import Protocols.*;
 import java.util.*;
@@ -59,11 +60,13 @@ public class Test {
 
         MDMatrix<MatrixDouble> mdMatrix = new MDMatrix<>(mdValues);
         //TODO: Start here
-       // MDMatrix<MatrixDouble> newDet = MDMatrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(mdMatrix);
+        MDMatrix<MatrixDouble> newDet = (MDMatrix<MatrixDouble>) MDMatrix.SupportedUnaryOperations.DETERMINANT.getOperationFunction().apply(mdMatrix).get();
         System.out.println();
         System.out.println();
         System.out.println("Obj matrix");
-        mdMatrix.displaySelf();
+        //mdMatrix.displaySelf();
+        newDet.displaySelf();
+        System.out.println("End obj matrix");
 
         List<List<ComplexNumber>> complexValues= new ArrayList<>();
         List<List<ComplexNumber>> complexValues1 = new ArrayList<>();
@@ -143,7 +146,23 @@ public class Test {
         System.out.println(unaryTest.getValues().get(0));
 
 
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
+        Matrix inverse = Matrix.SupportedUnaryOperations.INVERSE.getOperationFunction().apply(matrix1).get();
+        Optional<MDMatrix<? extends SupportsBinaryOperations>> mdInverse = MDMatrix.SupportedUnaryOperations.INVERSE.getOperationFunction().apply(mdMatrix);
+        if(mdInverse.isPresent()){
+            mdInverse.get().displaySelf();
+        }else{
+            System.out.println("Empty optional for inverse");
+        }
+
+
+        inverse.displaySelf();
+        //mdInverse.displaySelf();
     }
 
     static void clear(List list){

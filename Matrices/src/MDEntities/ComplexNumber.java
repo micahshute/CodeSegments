@@ -45,27 +45,27 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
     public enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<ComplexNumber>>{
 
         ADD("+", (lhs, rhs) -> {
-            double real = lhs.getReal() + rhs.getReal();
-            double imaginary = lhs.getImaginary() + rhs.getImaginary();
+            double real = round(lhs.getReal() + rhs.getReal());
+            double imaginary = round(lhs.getImaginary() + rhs.getImaginary());
             return Optional.of(new ComplexNumber(real, imaginary));
         }),
 
         SUBTRACT("-", (lhs, rhs) -> {
-            double real = lhs.getReal() - rhs.getReal();
-            double imaginary = lhs.getImaginary() - rhs.getImaginary();
+            double real = round(lhs.getReal() - rhs.getReal());
+            double imaginary = round(lhs.getImaginary() - rhs.getImaginary());
             return Optional.of(new ComplexNumber(real, imaginary));
 
         }),
 
         MULTIPLY("*", (lhs, rhs) -> {
-            double magnitude = lhs.getMagnitude() * rhs.getMagnitude();
-            double angle = lhs.getAngleInDegrees() + rhs.getAngleInDegrees();
+            double magnitude = round(lhs.getMagnitude() * rhs.getMagnitude());
+            double angle = round(lhs.getAngleInDegrees() + rhs.getAngleInDegrees());
             return Optional.of(new ComplexNumber(magnitude, new Angle(angle, true)));
         }),
 
         DIVIDE("/", (lhs, rhs) -> {
-            double magnitude = lhs.getMagnitude() / rhs.getMagnitude();
-            double angle = lhs.getAngleInDegrees() - rhs.getAngleInDegrees();
+            double magnitude = round(lhs.getMagnitude() / rhs.getMagnitude());
+            double angle = round(lhs.getAngleInDegrees() - rhs.getAngleInDegrees());
             return Optional.of(new ComplexNumber(magnitude, new Angle(angle, true)));
         });
 
@@ -84,6 +84,10 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
         @Override
         public String getSymbol() {
             return symbol;
+        }
+
+        private static double round(double number){
+            return Math.round(number * 100000)/100000;
         }
     }
 

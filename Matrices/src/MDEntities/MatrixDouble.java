@@ -1,5 +1,5 @@
 
-package Matrices;
+package MDEntities;
 
 import java.util.*;
 import Protocols.*;
@@ -46,16 +46,16 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
     public enum SupportedBinaryOperations implements SupportedOperationsEnumeration<FailableBinaryOperator<MatrixDouble>>{
 
         ADD("+", (lhs,rhs) -> {
-            return Optional.of((new MatrixDouble((lhs.getValue().doubleValue() + rhs.getValue().doubleValue()))));
+            return Optional.of((new MatrixDouble((round(lhs.getValue().doubleValue() + rhs.getValue().doubleValue())))));
         }),
         SUBTRACT("-", (lhs,rhs) ->{
-            return Optional.of(new MatrixDouble(lhs.getValue().doubleValue() - rhs.getValue().doubleValue()));
+            return Optional.of(new MatrixDouble(round(lhs.getValue().doubleValue() - rhs.getValue().doubleValue())));
         }),
         MULTIPLY("*", (lhs,rhs) -> {
-            return Optional.of(new MatrixDouble(lhs.getValue().doubleValue() * rhs.getValue().doubleValue()));
+            return Optional.of(new MatrixDouble(round(lhs.getValue().doubleValue() * rhs.getValue().doubleValue())));
         }),
         DIVIDE("/", (lhs,rhs) -> {
-            return Optional.of(new MatrixDouble(lhs.getValue().doubleValue() / rhs.getValue().doubleValue()));
+            return Optional.of(new MatrixDouble(round(lhs.getValue().doubleValue() / rhs.getValue().doubleValue())));
         });
 
 
@@ -74,6 +74,10 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
         @Override
         public String getSymbol() {
             return symbol;
+        }
+
+        private static double round(double value){
+            return Math.round(value * 100000) / 100000;
         }
     }
 
