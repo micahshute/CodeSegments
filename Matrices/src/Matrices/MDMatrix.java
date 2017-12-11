@@ -123,8 +123,8 @@ public class MDMatrix<T extends SupportsBinaryOperations> implements Equatable, 
 
                 }
             }
-            return Optional.empty();
-            //return new MDMatrix<SupportsBinaryOperations>(adjointToInverse);
+            //return Optional.empty();
+            return Optional.of(new MDMatrix<SupportsBinaryOperations>(adjointToInverse));
 
 
         });

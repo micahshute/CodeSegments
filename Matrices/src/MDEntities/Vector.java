@@ -33,10 +33,14 @@ public abstract class Vector implements Displayable, Equatable, Invertable{
         for(double dimension : dimensions){
             sumOfSquares += (dimension * dimension);
         }
-        return Math.sqrt(sumOfSquares);
+        return round(Math.sqrt(sumOfSquares));
     }
 
 
+
+    private double round(double number){
+        return (double)Math.round(number * 100000) / 100000.0;
+    }
 //    protected enum BinaryOperation implements SupportedOperationsEnumeration<FailableBinaryOperator<MDEntities.Vector>>{
 //
 //        ADD("+", (lhs, rhs) -> {

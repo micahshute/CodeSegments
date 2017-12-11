@@ -73,9 +73,9 @@ public class Test {
         List<ComplexNumber> valueHelper = new ArrayList<>();
         List<ComplexNumber> valueHelper1 = new ArrayList();
 
-        valueHelper.add(new ComplexNumber(1,0));
-        valueHelper.add(new ComplexNumber(1,1));
-        valueHelper.add(new ComplexNumber(2,1));
+        valueHelper.add(new ComplexNumber(2,0));
+        valueHelper.add(new ComplexNumber(4,0));
+        valueHelper.add(new ComplexNumber(6,0));
         System.out.println(valueHelper);
         complexValues.add(new ArrayList<>(valueHelper));
 
@@ -90,9 +90,9 @@ public class Test {
         clear(valueHelper);
         System.out.println(valueHelper);
 
-        valueHelper.add(new ComplexNumber(3,1));
-        valueHelper.add(new ComplexNumber(2,3));
-        valueHelper.add(new ComplexNumber(3,2));
+        valueHelper.add(new ComplexNumber(8,0));
+        valueHelper.add(new ComplexNumber(2,0));
+        valueHelper.add(new ComplexNumber(4,0));
         complexValues.add(new ArrayList<>(valueHelper));
         System.out.println(valueHelper);
 
@@ -109,9 +109,9 @@ public class Test {
         clear(valueHelper);
         System.out.println(valueHelper);
 
-        valueHelper.add(new ComplexNumber(2,4));
-        valueHelper.add(new ComplexNumber(4,6));
-        valueHelper.add(new ComplexNumber(6,8));
+        valueHelper.add(new ComplexNumber(6,0));
+        valueHelper.add(new ComplexNumber(8,0));
+        valueHelper.add(new ComplexNumber(10,0));
         System.out.println(valueHelper);
 
         complexValues.add(new ArrayList<>(valueHelper));
@@ -160,9 +160,11 @@ public class Test {
             System.out.println("Empty optional for inverse");
         }
 
+        System.out.println();
+        inverse.displaySelf(4);
 
-        inverse.displaySelf();
-        //mdInverse.displaySelf();
+        MDMatrix<ComplexNumber> valuesOneMatrix = new MDMatrix<ComplexNumber>(complexValues);
+        MDMatrix.SupportedUnaryOperations.INVERSE.getOperationFunction().apply(valuesOneMatrix).get().displaySelf();
     }
 
     static void clear(List list){

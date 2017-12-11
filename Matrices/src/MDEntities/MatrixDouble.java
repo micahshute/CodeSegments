@@ -77,7 +77,7 @@ public class MatrixDouble implements Equatable, SupportsBinaryOperations<MatrixD
         }
 
         private static double round(double value){
-            return Math.round(value * 100000) / 100000;
+            return (double)Math.round(value * 100000) / 100000.0;
         }
     }
 

@@ -21,12 +21,12 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
 
     public ComplexNumber(double real, double imaginary){
         super(2, real, imaginary);
-        this.real = real;
-        this.imaginary = imaginary;
+        this.real = round(real);
+        this.imaginary = round(imaginary);
     }
 
     public ComplexNumber(double magnitude, Angle angle) throws IllegalArgumentException{
-        super(2,Math.cos(angle.getRadian()) * magnitude, Math.sin(angle.getRadian()) * magnitude);
+        super(2,(double) Math.round(Math.cos(angle.getRadian()) * magnitude * 100000) / 100000.0, (double) Math.round(Math.sin(angle.getRadian()) * magnitude * 100000) / 100000.0);
 
         if(magnitude < 0){
             throw new IllegalArgumentException("Magnitude cannot be negative");
@@ -87,7 +87,7 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
         }
 
         private static double round(double number){
-            return Math.round(number * 100000)/100000;
+            return (double)Math.round(number * 100000) / 100000.0;
         }
     }
 
@@ -141,11 +141,11 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
 //    }
 
     public double getAngle(){
-        return getAngle(true);
+        return round(getAngle(true));
     }
 
     public double getAngleInDegrees(){
-        return getAngle(true);
+        return round(getAngle(true));
     }
 
     public double getAngleInRadians(){
@@ -321,5 +321,9 @@ public class ComplexNumber extends Vector implements SupportsBinaryOperations<Co
     @Override
     public ComplexNumber unityValueInstance() {
         return new ComplexNumber(1,0);
+    }
+
+    private double round(double number){
+        return (double)Math.round(number * 100000) / 100000.0;
     }
 }
